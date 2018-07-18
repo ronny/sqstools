@@ -11,10 +11,12 @@ with `-h` to see usage. This is the easiest option if you don't have the Go tool
 
 Alternatively, if you have the Go toolchain installed, then you can get the source and build it yourself:
 
-```
+```sh
 go get -u github.com/ronny/sqstools/.../
-$GOBIN/sqs-move-messages -h
+$GOPATH/bin/sqs-move-messages -h
 ```
+
+You can omit the `$GOPATH/bin/` prefix if it’s already in your `$PATH`.
 
 ## `sqs-move-messages`
 
@@ -25,12 +27,22 @@ Example:
 
 Move 20 messages (10 at a time) from a DLQ to the main queue:
 
-```
-env AWS_PROFILE=foo $GOBIN/sqs-move-messages \
+```sh
+sqs-move-messages \
   -src https://sqs.ap-southeast-2.amazonaws.com/1234567890/MyDeadLetterQueue \
   -dest https://sqs.ap-southeast-2.amazonaws.com/1234567890/MyMainQueue \
   -srcMaxMsgsPerRcv 10 \
   -srcIters 2
+```
+
+This uses the default AWS credentials in `~/.aws/credentials` first if any, then environment variables. Any of the
+following should work:
+```sh
+# if you already have credentials in ~/.aws/credentials under `foo` profile
+AWS_PROFILE=foo sqs-move-messages -h
+
+# or explicitly specify credentials via environment variables
+AWS_ACCESS_KEY_ID="..." AWS_SECRET_ACCESS_KEY="..." sqs-move-messages -h
 ```
 
 Full usage:
