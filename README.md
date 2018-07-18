@@ -4,12 +4,12 @@ Tools for performing common SQS tasks.
 
 ## Installation
 
-Get the latest binary for your platform from the [releases page], rename it and run it with `-h` to see usage. This is
-the easiest option if you don't have the go toolkit installed.
+Get the latest binary for your platform from the [releases page], rename it, make it executable if needed, then run it
+with `-h` to see usage. This is the easiest option if you don't have the Go toolchain installed.
 
 [releases page]: https://github.com/ronny/sqstools/releases
 
-Alternatively you can get the source and build it yourself:
+Alternatively, if you have the Go toolchain installed, then you can get the source and build it yourself:
 
 ```
 go get -u github.com/ronny/sqstools/.../
