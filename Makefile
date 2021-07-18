@@ -1,22 +1,24 @@
-test: vet fmt test-only
+all: binaries
 
-install:
-	go install -v ./cmd/...
+binaries:
+	env CGO_ENABLED=0 go build -o ./bin/ ./cmd/...
 
-build:
-	gox -os="linux darwin windows" -arch="amd64" -output="bin/{{.Dir}}_{{.OS}}_{{.Arch}}" github.com/ronny/sqstools/cmd/...
-	upx bin/*
+test: lint vet
+	go test -race -cover ./...
+
+test_bench: lint vet
+	go test -race -cover -bench=. ./...
+
+lint:
+	staticcheck ./...
 
 vet:
 	go vet -v ./...
 
-fmt:
-	go fmt ./...
+install:
+	go install -v ./cmd/...
 
-test-only:
-	go test -v -race -cover -bench=. ./...
+generate:
+	go generate -v ./...
 
-mocks:
-	mockery -all -dir ./internal/sqstools/ -output ./internal/mocks/
-
-.PHONY: test install build vet fmt test-only mocks
+.PHONY: all binaries test test_bench lint vet install generate
